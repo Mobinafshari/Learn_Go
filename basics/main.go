@@ -25,5 +25,6 @@ func printLog(l LogLevel) {
 }
 
 func main() {
-	printLog(Warn)
+	// printLog(Warn)
+	
 }
