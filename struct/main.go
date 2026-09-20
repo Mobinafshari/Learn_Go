@@ -33,6 +33,11 @@ func (e Employee) fullName() string {
 	return strings.Join(names[:], " ")
 }
 
+func fullName(e *Employee) string {
+	names := [2]string{e.FirstName, e.LastName}
+	return strings.Join(names[:], " ")
+}
+
 func (e Employee) deActivate() {
 	e.IsActive = false
 }
