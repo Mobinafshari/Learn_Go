@@ -13,5 +13,9 @@ func (c Config) String() string {
 }
 
 func main() {
-
+	x := 10
+	p := &x
+	*p = 20
+	fmt.Println(x)  // 10
+	fmt.Println(*p) // 20
 }
