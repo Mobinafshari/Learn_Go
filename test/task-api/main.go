@@ -25,6 +25,7 @@ func main() {
 
 	mux.HandleFunc("GET /health", healthHandler)
 	mux.HandleFunc("GET /tasks", tasks.listTasks)
+	mux.HandleFunc("POST /tasks", tasks.createTask)
 
 	log.Println("Server running on :8090")
 	log.Fatal(http.ListenAndServe(":8090", mux))
