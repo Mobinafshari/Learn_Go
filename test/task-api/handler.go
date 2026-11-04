@@ -94,6 +94,7 @@ func (s *TaskStore) updateTask(
 	}
 	if input.Title != nil && strings.TrimSpace(*input.Title) == "" {
 		http.Error(w, "Title cannot be empty", http.StatusBadRequest)
+		return
 	}
 
 	for i := range s.tasks {
