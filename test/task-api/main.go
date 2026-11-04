@@ -27,6 +27,7 @@ func main() {
 	mux.HandleFunc("GET /tasks", tasks.listTasks)
 	mux.HandleFunc("POST /tasks", tasks.createTask)
 	mux.HandleFunc("GET /tasks/{id}", tasks.getTask)
+	mux.HandleFunc("POST /tasks/{id}", tasks.updateTask)
 
 	log.Println("Server running on :8090")
 	log.Fatal(http.ListenAndServe(":8090", mux))

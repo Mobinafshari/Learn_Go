@@ -73,3 +73,49 @@ func (s *TaskStore) getTask(
 
 	http.Error(w, "task not found", http.StatusNotFound)
 }
+
+func (s *TaskStore) updateTask(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	idStr := r.PathValue("id")
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "invalid task ID", http.StatusBadRequest)
+		return
+	}
+
+	var input UpdateTaskInput
+
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		http.Error(w, "invalid JSON body", http.StatusBadRequest)
+		return
+	}
+	if input.Title != nil && strings.TrimSpace(*input.Title) == "" {
+		http.Error(w, "Title cannot be empty", http.StatusBadRequest)
+	}
+
+	for i := range s.tasks {
+		task := &s.tasks[i]
+		if task.ID == id {
+			w.Header().Set("Content-Type", "application/json")
+			if input.Title != nil {
+				task.Title = *input.Title
+			}
+
+			if input.Description != nil {
+				task.Description = *input.Description
+			}
+
+			if input.Completed != nil {
+				task.Completed = *input.Completed
+			}
+			json.NewEncoder(w).Encode(task)
+			return
+
+		}
+	}
+	http.Error(w, "task not found", http.StatusNotFound)
+
+}
