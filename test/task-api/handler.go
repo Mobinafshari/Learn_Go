@@ -120,3 +120,32 @@ func (s *TaskStore) updateTask(
 	http.Error(w, "task not found", http.StatusNotFound)
 
 }
+
+func (s *TaskStore) deleteTask(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	idStr := r.PathValue("id")
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "id is not valid", http.StatusBadRequest)
+		return
+	}
+
+	for i := range s.tasks {
+		task := s.tasks[i]
+		if task.ID == id {
+			s.tasks = append(s.tasks[:i], s.tasks[i+1:]...)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(map[string]string{
+				"message": "task Deleted successfully",
+			})
+			return
+		}
+	}
+
+	http.Error(w, "Task not found", http.StatusNotFound)
+}
